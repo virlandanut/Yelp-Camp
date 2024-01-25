@@ -1,0 +1,31 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row">
+  <div class="col-6 offset-3">
+    <div class="card mb-3" style="width: 18rem">
+      <img src="<%= campground.image  %>" class="card-img-top" alt="..." />
+      <div class="card-body">
+        <h5 class="card-title"><%= campground.title %></h5>
+        <p class="card-text"><%= campground.description %></p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item text-muted"><%= campground.location %></li>
+        <li class="list-group-item text-success">
+          <%= campground.price %> RON / Noapte
+        </li>
+      </ul>
+      <div class="card-body">
+        <a href="/campgrounds/<%= campground._id%>/edit" class="card-link  btn btn-primary""
+          >Editează</a
+        >
+        <a
+          href="/campgrounds/<%= campground._id%>?_method=DELETE"
+          class="card-link btn btn-danger"
+          >Șterge</a
+        >
+      </div>
+      <div class="card-footer text-muted">
+        Acum 2 zile
+      </div>
+    </div>
+  </div>
+</div>
