@@ -1,0 +1,73 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row">
+  <h1 class="text-center">Loc nou de camping</h1>
+  <div class="col-6 offset-3">
+    <form action="/campgrounds" method="POST" novalidate class="validated-form">
+      <div class="mb-3">
+        <label class="form-label" for="title">Titlu</label>
+        <input
+          class="form-control"
+          type="text"
+          id="title"
+          name="campground[title]"
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="location">Locație</label>
+        <input
+          class="form-control"
+          type="text"
+          id="location"
+          name="campground[location]"
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="image">Imagine</label>
+        <input
+          class="form-control"
+          type="text"
+          id="location"
+          name="campground[image]"
+          required
+        />
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Preț</label>
+        <div class="input-group">
+          <span class="input-group-text" id="price-label">RON</span>
+          <input
+            type="text"
+            class="form-control"
+            id="price"
+            placeholder="0.00"
+            aria-describedby="price-label"
+            aria-label="Preț"
+            name="campground[price]"
+            required
+          />
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="description">Descriere</label>
+        <textarea
+          class="form-control"
+          type="text"
+          id="description"
+          name="campground[description]"
+          required
+        ></textarea>
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+      <div class="mb-3">
+        <button class="btn btn-success">Trimite</button>
+      </div>
+      <a href="/campgrounds">Toate locurile de camping</a>
+    </form>
+  </div>
+</div>
