@@ -1,12 +1,20 @@
+/*
+ * Importare și inițializare Express,
+ * method-override și ExpressError
+ */
 const express = require("express");
-const path = require("path");
-const mongoose = require("mongoose");
+const app = express();
 const methodOverride = require("method-override");
-const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
-const campgroundsRoutes = require("./routes/campgrounds");
-const reviewsRouters = require("./routes/reviews");
+const session = require("express-session");
+const flash = require("connect-flash");
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
+/*
+ * Conexiunea cu baza de date folosing mongoose.
+ */
+const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/yelp-camp");
 mongoose.set("strictQuery", true);
 const db = mongoose.connection;
@@ -15,13 +23,46 @@ db.once("open", () => {
   console.log("Conexiunea cu baza de date este reușită!");
 });
 
-const app = express();
+const sessionConfig = {
+  secret: "thisshouldbeabettersecret",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
 
+app.use(session(sessionConfig));
+app.use(flash());
+
+/*
+ * Middleware flash
+ */
+
+app.use((request, response, next) => {
+  response.locals.success = request.flash("success");
+  response.locals.error = request.flash("error");
+  next();
+});
+
+/*
+ * Setare Embeded JavaScript ca default
+ * pentru randarea paginilor web.
+ */
+const ejsMate = require("ejs-mate");
+const path = require("path");
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride("_method"));
+app.use(express.static(path.join(__dirname, "public")));
+
+/*
+ * Importare rute separate
+ */
+const campgroundsRoutes = require("./routes/campgrounds");
+const reviewsRouters = require("./routes/reviews");
 app.use("/campgrounds", campgroundsRoutes);
 app.use("/campgrounds/:id/reviews", reviewsRouters);
 
@@ -36,7 +77,6 @@ app.all("*", (request, response, next) => {
 app.use((error, request, response, next) => {
   const { statusCode = 500, message = "Something went wrong..." } = error;
   response.status(statusCode).send(message);
-  response.send("Something went wrong...");
 });
 
 app.listen(3000, () => {

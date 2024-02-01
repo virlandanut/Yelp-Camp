@@ -38,6 +38,7 @@ router.post(
     const { campground } = request.body;
     const camp = new Campground(campground);
     await camp.save();
+    request.flash("success", "Locul de campat a fost creat cu success!");
     response.redirect(`/campgrounds/${camp._id}`);
   })
 );
@@ -46,6 +47,10 @@ router.get(
   catchAsync(async (request, response) => {
     const { id } = request.params;
     const campground = await Campground.findById(id).populate("reviews");
+    if (!campground) {
+      request.flash("error", "Locul pe care doriți să-l accesați nu există!");
+      response.redirect("/campgrounds");
+    }
     response.render("campgrounds/show", { campground });
   })
 );
@@ -55,6 +60,10 @@ router.get(
   catchAsync(async (request, response) => {
     const { id } = request.params;
     const campground = await Campground.findByIdAndUpdate(id);
+    if (!campground) {
+      request.flash("error", "Locul pe care doriți să-l editați nu există!");
+      response.redirect("/campgrounds");
+    }
     response.render("campgrounds/edit", { campground });
   })
 );
@@ -67,6 +76,7 @@ router.put(
     const campground = await Campground.findByIdAndUpdate(id, {
       ...request.body.campground,
     });
+    request.flash("success", "Locul de campat a fost actualizat cu succes!");
     response.redirect(`/campgrounds/${campground._id}`);
   })
 );

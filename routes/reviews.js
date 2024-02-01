@@ -25,6 +25,7 @@ router.post(
     campground.reviews.push(review);
     await review.save();
     await campground.save();
+    request.flash("success", "Review-ul a fost adăugat cu success!");
     response.redirect(`/campgrounds/${campground._id}`);
   })
 );
@@ -35,7 +36,7 @@ router.delete(
     const { id, reviewId } = request.params;
     await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
     await Review.findByIdAndDelete(reviewId);
-
+    request.flash("success", "Review-ul a fost șters cu success!");
     response.redirect(`/campgrounds/${id}`);
   })
 );
