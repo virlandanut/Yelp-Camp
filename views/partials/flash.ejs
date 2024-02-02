@@ -1,13 +1,9 @@
 <% if(success && success.length) { %>
 <div class="alert alert-success" role="alert">
-  <h4 class="alert-heading">Felicitări!</h4>
   <p><%= success %></p>
 </div>
-<% } %>
-
-<% if(error && error.length) { %>
+<% } %> <% if(error && error.length) { %>
 <div class="alert alert-danger" role="alert">
-  <h4 class="alert-heading">Eroare!</h4>
   <p><%= error %></p>
 </div>
 <% } %>
