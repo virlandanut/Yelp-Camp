@@ -9,13 +9,14 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="/public/stylesheets/stars.css" />
+
     <title>YelpCamp</title>
   </head>
   <body class="d-flex flex-column vh-100">
     <%- include('../partials/navbar') %>
     <main class="container mt-5">
-      <%- include('../partials/flash') %> 
-      <%- body %>
+      <%- include('../partials/flash') %> <%- body %>
     </main>
     <%- include('../partials/footer') %>
     <script
