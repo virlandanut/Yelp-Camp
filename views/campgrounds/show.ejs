@@ -9,10 +9,14 @@
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item text-muted"><%= campground.location %></li>
+        <li class="list-group-item">
+          Adăugat de <%= campground.author.username %>
+        </li>
         <li class="list-group-item text-success">
           <%= campground.price %> RON / Noapte
         </li>
       </ul>
+      <% if(currentUser && campground.author.equals(currentUser._id)) {%>
       <div class="card-body row">
         <a href="/campgrounds/<%= campground._id%>/edit" class="col-2">
           <button class="btn btn-primary">Editează</button>
@@ -25,10 +29,12 @@
           <button class="card-link btn btn-danger">Șterge</button>
         </form>
       </div>
+      <% } %>
       <div class="card-footer text-muted">Acum 2 zile</div>
     </div>
   </div>
   <div class="col-6">
+    <% if(currentUser) { %>
     <h2>Lasă un review</h2>
     <form
       action="/campgrounds/<%= campground._id %>/reviews"
@@ -61,16 +67,22 @@
       </div>
       <button class="btn btn-success">Adaugă Review</button>
     </form>
-    <% for(let review of campground.reviews) { %>
+    <% } %> <% for(let review of campground.reviews) { %> <%=
+    console.log(review) %>
     <div class="card mb-3">
       <div class="mb-3 card-body">
         <h5 class="card-title">Rating: <%= review.rating %></h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          <%= review.author.username %>
+        </h6>
         <p class="card-text"><%= review.body %></p>
         <form
           action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE"
           method="POST"
         >
+          <% if(currentUser && review.author.equals(currentUser._id)) { %>
           <button class="btn btn-sm btn-danger">Șterge</button>
+          <% } %>
         </form>
       </div>
     </div>
