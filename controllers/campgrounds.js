@@ -10,12 +10,16 @@ module.exports.renderNewForm = async (request, response) => {
 };
 
 module.exports.createCampground = async (request, response, next) => {
-  const { campground } = request.body;
-  const camp = new Campground(campground);
-  camp.author = request.user._id;
-  await camp.save();
-  request.flash("success", "Locul de campat a fost creat cu success!");
-  response.redirect(`/campgrounds/${camp._id}`);
+  const campground = new Campground(request.body.campground);
+  campground.images = request.files.map((f) => ({
+    url: f.path,
+    filename: f.filename,
+  }));
+  campground.author = request.user._id;
+  await campground.save();
+  console.log(campground);
+  request.flash("success", "Successfully made a new campground!");
+  response.redirect(`/campgrounds/${campground._id}`);
 };
 
 module.exports.showCampground = async (request, response) => {
