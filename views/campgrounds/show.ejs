@@ -1,21 +1,8 @@
 <% layout("/layouts/boilerplate") %>
 <div class="row">
   <div class="col-6">
-    <div
-      id="carouselExampleControls"
-      class="carousel slide"
-      data-ride="carousel"
-    >
-      <div class="carousel-inner">
-        <% for(let img of campground.images) { %>
-        <div class="carousel-item active">
-          <img src="<%= img.url %>" class="d-block w-100" alt="" />
-        </div>
-        <% } %>
-      </div>
-    </div>
     <div class="card mb-3">
-      <img src="" class="card-img-top" alt="..." />
+      <img src="<%= campground.images.url %>" class="card-img-top" alt="..." />
 
       <div class="card-body">
         <h5 class="card-title"><%= campground.title %></h5>

@@ -10,16 +10,24 @@ module.exports.renderNewForm = async (request, response) => {
 };
 
 module.exports.createCampground = async (request, response, next) => {
-  const campground = new Campground(request.body.campground);
-  campground.images = request.files.map((f) => ({
-    url: f.path,
-    filename: f.filename,
-  }));
-  campground.author = request.user._id;
-  await campground.save();
-  console.log(campground);
-  request.flash("success", "Successfully made a new campground!");
-  response.redirect(`/campgrounds/${campground._id}`);
+  try {
+    const campground = new Campground(request.body.campground);
+    // Check if request.files exists and it's an array
+    if (request.files && Array.isArray(request.files)) {
+      campground.images = request.files.map((f) => ({
+        url: f.path,
+        filename: f.filename,
+      }));
+    }
+    campground.author = request.user._id;
+    await campground.save();
+    console.log(campground);
+    request.flash("success", "Successfully made a new campground!");
+    response.redirect(`/campgrounds/${campground._id}`);
+  } catch (error) {
+    console.error("Error creating campground:", error);
+    next(error); // Pass the error to the error handling middleware
+  }
 };
 
 module.exports.showCampground = async (request, response) => {
